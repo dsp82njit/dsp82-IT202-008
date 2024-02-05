@@ -8,6 +8,7 @@ function getTotal($arr) {
     $total = 0.00;
     //note: use the $arr variable, don't directly touch $a1-$a4
     //TODO do adding here
+    //dsp82 date: 2/5/2024
     foreach ($arr as $value){
         $total += $value;
     }
