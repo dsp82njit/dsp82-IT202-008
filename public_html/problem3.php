@@ -11,7 +11,7 @@ function bePositive($arr) {
     //TODO use echo to output all of the values as positive (even if they were originally positive) and maintain the original datatype
     //hint: may want to use var_dump() or similar to show final data types
     foreach($arr as $value){
-        echo (abs($value));
+        echo (abs($value . " "));
     }
 }
 echo "Problem 3: Be Positive<br>";
