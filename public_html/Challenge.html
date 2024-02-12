@@ -34,15 +34,16 @@
 
         ul{ 
             list-style-type: none;
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 0;
         }
         ul li::before{
             content: "✓";
             margin-right: 5px;
         }
 
-        h3{
-            color:black;
-        }
+        
 
         /* TODO: make edits here */
     </style>
