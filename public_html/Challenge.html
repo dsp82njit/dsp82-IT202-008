@@ -8,6 +8,12 @@
         window.addEventListener("load", () => {
             console.log("loaded via javascript");
             //TODO: add any extra onload processing you may need here
+            const navLinks = document.querySelectorAll('nav ul li a');
+            navLinks.forEach(link => {
+                link.onclick = function() {
+                    updateContent(this.innerText);
+                };
+            });
         });
         function getCurrentSelection() {
             setTimeout(() => {
@@ -16,7 +22,19 @@
 
                 //Note: likely you'll want to call updateCurrentPage towards the end
             }, 100);
+            
         }
+        function updateContent(linkText) {
+            // Update h1 tag content
+            document.querySelector('h1').innerText = linkText;
+
+            // Update title tag content
+            document.title = linkText;
+
+            // Call updateCurrentPage with lowercase linkText
+            updateCurrentPage(linkText.toLowerCase());
+        }
+       
     </script>
     <style>
         nav ul{
@@ -43,11 +61,15 @@
         ul{ 
             list-style-type: none;
         }
-        ul li::before{
+        ul a::before{
             content: "✓";
             margin-right: 5px;
         }
+<<<<<<< HEAD
+       
+=======
         
+>>>>>>> 68dd7750f3538d5c19ed0d79f57e7eba1d992e3e
 
         /* TODO: make edits here */
     </style>
