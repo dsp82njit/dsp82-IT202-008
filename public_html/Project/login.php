@@ -33,9 +33,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $hasError = true;
     }
     //sanitize
-    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    $email = sanitize_email($email);
     //validate
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!is_valid_email($email)) {
         echo "Invalid email address";
         $hasError = true;
     }
@@ -59,14 +59,14 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     $hash = $user["password"];
                     unset($user["password"]);
                     if (password_verify($password, $hash)) {
-                        echo "Weclome $email";
+                        flash("Weclome $email");
                         $_SESSION["user"] = $user;
                         die(header("Location: home.php"));
                     } else {
-                        echo "Invalid password";
+                         flash("Invalid password");
                     }
                 } else {
-                    echo "Email not found";
+                    flash("Email not found");
                 }
             }
         } catch (Exception $e) {
@@ -75,3 +75,4 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     }
 }
 ?>
+<?php require_once(__DIR__ . "/../../partials/flash.php");
