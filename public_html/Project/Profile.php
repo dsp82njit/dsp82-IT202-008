@@ -2,6 +2,7 @@
 require_once(__DIR__ . "/../../partials/nav.php");
 is_logged_in(true);
 ?>
+
 <?php
 if (isset($_POST["save"])) {
     $email = se($_POST, "email", null, false);
@@ -34,7 +35,6 @@ if (isset($_POST["save"])) {
             $stmt->execute([":id" => get_user_id()]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($user) {
-                //$_SESSION["user"] = $user;
                 $_SESSION["user"]["email"] = $user["email"];
                 $_SESSION["user"]["username"] = $user["username"];
             } else {
@@ -42,10 +42,8 @@ if (isset($_POST["save"])) {
             }
         } catch (Exception $e) {
             flash("An unexpected error occurred, please try again", "danger");
-            //echo "<pre>" . var_export($e->errorInfo, true) . "</pre>";
         }
     }
-
 
     //check/update password
     $current_password = se($_POST, "currentPassword", null, false);
@@ -59,7 +57,6 @@ if (isset($_POST["save"])) {
         }
         if (!$hasError) {
             if ($new_password === $confirm_password) {
-                //TODO validate current
                 $stmt = $db->prepare("SELECT password from Users where id = :id");
                 try {
                     $stmt->execute([":id" => get_user_id()]);
@@ -72,7 +69,6 @@ if (isset($_POST["save"])) {
                                 ":id" => get_user_id(),
                                 ":password" => password_hash($new_password, PASSWORD_BCRYPT)
                             ]);
-
                             flash("Password reset", "success");
                         } else {
                             flash("Current password is invalid", "warning");
@@ -102,7 +98,6 @@ $username = get_username();
         <label for="username">Username</label>
         <input type="text" name="username" id="username" value="<?php se($username); ?>" />
     </div>
-    <!-- DO NOT PRELOAD PASSWORD -->
     <div>Password Reset</div>
     <div class="mb-3">
         <label for="cp">Current Password</label>
@@ -121,18 +116,35 @@ $username = get_username();
 
 <script>
     function validate(form) {
-        let pw = form.newPassword.value;
-        let con = form.confirmPassword.value;
         let isValid = true;
-        //TODO add other client side validation....
+        let newPassword = form.newPassword.value;
+        let confirmPassword = form.confirmPassword.value;
+        let currentPassword = form.currentPassword.value;
 
-        //example of using flash via javascript
-        //find the flash container, create a new element, appendChild
-        if (pw !== con) {
-            flash("Password and Confrim password must match", "warning");
+        // Check if new password meets requirements
+        if (newPassword.length < 8) {
+            alert("New password must be at least 8 characters long", "warning");
             isValid = false;
         }
+
+        // Check if new password matches confirmation
+        if (newPassword !== confirmPassword) {
+            alert("New passwords don't match", "warning");
+            isValid = false;
+        }
+
+        // Check if current password is provided
+        if (currentPassword === '') {
+            alert("Please enter your current password", "warning");
+            isValid = false;
+        }
+
         return isValid;
+    }
+
+    // Function to display flash messages
+    function flash(message, type) {
+        // Implement flash message display logic here
     }
 </script>
 <?php
