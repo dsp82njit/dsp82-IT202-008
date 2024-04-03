@@ -14,13 +14,53 @@ require(__DIR__ . "/../../partials/nav.php");
 </form>
 <script>
     function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
+        // Get the values of the email/username and password fields
+        var emailOrUsername = form.email.value.trim();
+        var password = form.password.value.trim();
 
-        //TODO update clientside validation to check if it should
-        //valid email or username
+        // Check if email/username field is empty
+        if (emailOrUsername === "") {
+            alert("Email/Username must not be empty", "danger");
+            return false;
+        }
+
+        // Check if password field is empty
+        if (password === "") {
+            alert("Password must not be empty", "danger");
+            return false;
+        }
+
+        // Check if password meets the minimum length requirement
+        if (password.length < 8) {
+            alert("Password must be at least 8 characters long", "danger");
+            return false;
+        }
+
+        // All validations passed, return true to submit the form
         return true;
     }
+
+    // Function to display flash messages
+    function flash(message, type) {
+        // Create a new div element for the flash message
+        var flashDiv = document.createElement("div");
+        
+        // Set the class attribute for styling based on the message type
+        flashDiv.className = "flash-message " + type;
+        
+        // Create a text node with the message text
+        var textNode = document.createTextNode(message);
+        
+        // Append the text node to the flash div
+        flashDiv.appendChild(textNode);
+        
+        // Get the container element where flash messages should be displayed
+        var container = document.getElementById("flash-container");
+        
+        // Append the flash div to the container
+        container.appendChild(flashDiv);
+    }
+    
 </script>
 <?php
 //TODO 2: add PHP Code

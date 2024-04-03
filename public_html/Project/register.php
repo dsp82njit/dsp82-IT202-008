@@ -23,8 +23,34 @@ reset_session();
 </form>
 <script>
     function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
+        var email = form.email.value;
+        var username = form.username.value;
+        var password = form.password.value;
+        var confirm = form.confirm.value;
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var usernameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+        var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        if (!usernameRegex.test(username)) {
+            alert("Username must only contain 3-16 characters a-z, 0-9, _, or -");
+            return false;
+        }
+
+        if (!passwordRegex.test(password)) {
+            alert("Password must be at least 8 characters long and contain at least one digit, one lowercase letter, and one uppercase letter.");
+            return false;
+        }
+
+        if (password !== confirm) {
+            alert("Passwords do not match.");
+            return false;
+        }
 
         return true;
     }
