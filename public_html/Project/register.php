@@ -22,6 +22,7 @@ reset_session();
     <input type="submit" value="Register" />
 </form>
 <script>
+    //dsp82 4/2/2024
     function validate(form) {
         var email = form.email.value;
         var username = form.username.value;
@@ -33,22 +34,22 @@ reset_session();
         var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
         if (!emailRegex.test(email)) {
-            alert("Please enter a valid email address.");
+            flash("Please enter a valid email address.");
             return false;
         }
 
         if (!usernameRegex.test(username)) {
-            alert("Username must only contain 3-16 characters a-z, 0-9, _, or -");
+            flash("Username must only contain 3-16 characters a-z, 0-9, _, or -");
             return false;
         }
 
         if (!passwordRegex.test(password)) {
-            alert("Password must be at least 8 characters long and contain at least one digit, one lowercase letter, and one uppercase letter.");
+            flash("Password must be at least 8 characters long and contain at least one digit, one lowercase letter, and one uppercase letter.");
             return false;
         }
 
         if (password !== confirm) {
-            alert("Passwords do not match.");
+            flash("Passwords do not match.");
             return false;
         }
 
@@ -56,6 +57,7 @@ reset_session();
     }
 </script>
 <?php
+//dsp82 /4/2/2024
 //TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"]) && isset($_POST["username"])) {
     $email = se($_POST, "email", "", false);
