@@ -17,22 +17,23 @@ require(__DIR__ . "/../../partials/nav.php");
         // Get the values of the email/username and password fields
         var emailOrUsername = form.email.value.trim();
         var password = form.password.value.trim();
+        
 
         // Check if email/username field is empty
         if (emailOrUsername === "") {
-            alert("Email/Username must not be empty", "danger");
+            flash("Email/Username must not be empty", "danger");
             return false;
         }
 
         // Check if password field is empty
         if (password === "") {
-            alert("Password must not be empty", "danger");
+            flash("Password must not be empty", "danger");
             return false;
         }
 
         // Check if password meets the minimum length requirement
         if (password.length < 8) {
-            alert("Password must be at least 8 characters long", "danger");
+            flash("Password must be at least 8 characters long", "danger");
             return false;
         }
 
@@ -60,7 +61,7 @@ require(__DIR__ . "/../../partials/nav.php");
         // Append the flash div to the container
         container.appendChild(flashDiv);
     }
-    
+    //dsp82 4/2/2024
 </script>
 <?php
 //TODO 2: add PHP Code
@@ -81,7 +82,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         //validate
         /*if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             flash("Invalid email address");
-            $hasError = true;
+           dsp82 4/2/2024 $hasError = true;
         }*/
         if (!is_valid_email($email)) {
             flash("Invalid email address");
@@ -102,7 +103,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $hasError = true;
     }
     if (!$hasError) {
-        //flash("Welcome, $email");
+        //flash("Welcome, $email"); dsp82  4.2.2024
         //TODO 4
         $db = getDB();
         $stmt = $db->prepare("SELECT id, email, username, password from Users 
@@ -115,7 +116,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                     $hash = $user["password"];
                     unset($user["password"]);
                     if (password_verify($password, $hash)) {
-                        //flash("Weclome $email");
+                        //flash("Weclome $email"); dsp82 4/2/2024
                         $_SESSION["user"] = $user; //sets our session data from db
                         //lookup potential roles
                         $stmt = $db->prepare("SELECT Roles.name FROM Roles 
