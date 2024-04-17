@@ -4,7 +4,7 @@ require(__DIR__ . "/../../partials/nav.php");
 $result = [];
 if (isset($_GET["symbol"])) {
     //function=GLOBAL_QUOTE&symbol=MSFT&datatype=json
-    $data = ["query" => "Fast", "datatype" => "json"];
+    $data = ["query" => "fast", "datatype" => "json"];
     $endpoint = "https://imdb188.p.rapidapi.com/api/v1/searchIMDB";
     $isRapidAPI = true;
     $rapidAPIHost = "imdb188.p.rapidapi.com";
@@ -24,7 +24,8 @@ if (isset($_GET["symbol"])) {
         "10. change percent": "-0.7372%"
     }
 }'];*/
-    error_log("Response: " . var_export($result, true));
+    
+error_log("Response: " . var_export($result, true));
     if (se($result, "status", 400, false) == 200 && isset($result["response"])) {
         $result = json_decode($result["response"], true);
     } else {
@@ -32,8 +33,8 @@ if (isset($_GET["symbol"])) {
     }
 }
 
-if(isset($result["Response"])){
-    $result=$result["response"];
+if(isset($result["data"])){
+    $result=$result["data"];
 }
 
 //foreach ($data as $movie) {
@@ -49,12 +50,12 @@ if(isset($result["Response"])){
     //}
 //}
 $db =getDB();
-$query ="INSERT INTO 'MOVIE2' ";
+$query ="INSERT INTO `MOVIE2` ";
 $columns=[];
 $params=[];
 
 
-foreach($result as $index => $row) {
+/*foreach($result as $index => $row) {
     foreach ($row as $k => $v) {
         if($index === 0){
         array_push($columns, "$k");
@@ -74,6 +75,24 @@ foreach($result as $index => $row) {
         
         $params[":$k$index"] = $v;
     }
+}*/
+
+foreach ($result as $index => $row) {
+    foreach ($row as $k => $v) {
+        if ($index === 0) {
+            array_push($columns, $k);
+        }
+        if ($k === "id" || $k === "qid" || $k === "q" || $k === "image") {
+            continue;
+        }
+        if (!isset($row['year'])) {
+            $params[":year$index"] = "0000";
+        }
+        if ($k === "title" || $k === "year" || $k === "stars") {
+            $params[":$k$index"] = $v;
+        }
+        
+    }
 }
 
 
@@ -83,10 +102,10 @@ unset($columns[5]);
 unset($columns[6]);
 
 
-$query .= "(" . implode(",", $columns) . ")";
-    $query .= "VALUES (" . join(",",array_keys($params)) . ")";
-    var_export($query);
-    error_log(var_export($params, true));
+$query .= "(" . join(",", $columns) . ")";
+$query .= "VALUES (" . join(",",array_keys($params)) . ")";
+var_export($query);
+error_log(var_export($params, true));
 
 
 
@@ -101,13 +120,13 @@ $query .= "(" . implode(",", $columns) . ")";
 
 ?>
 <div class="container-fluid">
-    <h1>Hotel Info</h1>
+    <h1>Movie Info</h1>
     <p>Remember, we typically won't be frequently calling live data from our API, this is merely a quick sample. We'll want to cache data in our DB to save on API quota.</p>
     <form>
         <div>
             <label>Symbol</label>
             <input name="symbol" />
-            <input type="submit" value="Fetch Stock" />
+            <input type="submit" value="Fetch Movie" />
         </div>
     </form>
     <div class="row ">
