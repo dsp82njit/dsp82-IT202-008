@@ -1,5 +1,5 @@
 <?php
-// Include necessary files and check user roles
+// Include necessary files and check user roles dsp82 4/17/2024
 require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
@@ -45,8 +45,9 @@ $table = [
     "view_url" => get_url("admin/view_movie.php"),
     "delete_url" => get_url("admin/delete_movie.php"),
     "edit_url"=> get_url("admin/edit_movie.php"),
+    
 ];
-
+//dsp82 4/17/2024
 
 // Render the page content
 ?>
