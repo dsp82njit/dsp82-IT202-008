@@ -41,6 +41,10 @@ foreach ($movie as $key => $value) {
     <h3>Movie: <?php se($movie, "title", "Unknown"); ?></h3>
     <div>
         <a href="<?php echo get_url("admin/list_movies.php"); ?>" class="btn btn-secondary">Back</a>
+        <?php if (has_role("Admin")): ?>
+            <a href="<?php echo get_url("admin/edit_movie.php?id=" . $id); ?>" class="btn btn-primary">Edit</a>
+            <a href="<?php echo get_url("admin/delete_movie.php?id=" . $id); ?>" class="btn btn-danger">Delete</a>
+        <?php endif; ?>
     </div>
     <div class="card mx-auto" style="width: 18rem;">
         <img src="https://example.com/<?php se($movie, "title", "Unknown"); ?>.jpg" class="card-img-top" alt="...">

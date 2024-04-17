@@ -59,7 +59,7 @@ session_start();
             <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_roles.php'); ?>">Assign Roles</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/create_movie.php'); ?>">Create Movie</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_movies.php'); ?>">Movie List</a></li>
-            
+            <li><a class="dropdown-item" href="<?php echo get_url('testApi.php'); ?>">Fetch Movie List</a></li>
             
         </ul>
         </li>
