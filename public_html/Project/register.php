@@ -22,14 +22,42 @@ reset_session();
     <input type="submit" value="Register" />
 </form>
 <script>
+    //dsp82 4/2/2024
     function validate(form) {
-        //TODO 1: implement JavaScript validation
-        //ensure it returns false for an error and true for success
+        var email = form.email.value;
+        var username = form.username.value;
+        var password = form.password.value;
+        var confirm = form.confirm.value;
+
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        var usernameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+        var passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+        if (!emailRegex.test(email)) {
+            flash("Please enter a valid email address.");
+            return false;
+        }
+
+        if (!usernameRegex.test(username)) {
+            flash("Username must only contain 3-16 characters a-z, 0-9, _, or -");
+            return false;
+        }
+
+        if (!passwordRegex.test(password)) {
+            flash("Password must be at least 8 characters long and contain at least one digit, one lowercase letter, and one uppercase letter.");
+            return false;
+        }
+
+        if (password !== confirm) {
+            flash("Passwords do not match.");
+            return false;
+        }
 
         return true;
     }
 </script>
 <?php
+//dsp82 /4/2/2024
 //TODO 2: add PHP Code
 if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm"]) && isset($_POST["username"])) {
     $email = se($_POST, "email", "", false);
