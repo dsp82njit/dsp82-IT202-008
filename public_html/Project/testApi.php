@@ -101,23 +101,19 @@ unset($columns[1]);
 unset($columns[5]);
 unset($columns[6]);
 
-
+//$query = insert("MOVIE2", $row);
 $query .= "(" . join(",", $columns) . ")";
-$query .= "VALUES (" . join(",",array_keys($params)) . ")";
+$query .= "VALUES (" . join(",", array_keys($params)) . ")";
+
 var_export($query);
-error_log(var_export($params, true));
-
-
-
-    try{
-        $stmt=$db->prepare($query);
-        $stmt->execute($params);
-        flash("Inserted record", "success");
-    }
-    catch(PDOException $e){
-        error_log("Something broke with the query" . var_export($e, true));
-    }
-
+try {
+    $stmt =$db->prepare($query);
+    $stmt->execute($params);
+    flash("Inserted record", "success");
+} catch (PDOException $e) {
+    error_log("Something broke with the query" . var_export($e, true));
+    flash("An error occurred", "danger");
+}
 ?>
 <div class="container-fluid">
     <h1>Movie Info</h1>
