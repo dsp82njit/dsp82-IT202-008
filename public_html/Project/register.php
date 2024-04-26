@@ -2,25 +2,27 @@
 require(__DIR__ . "/../../partials/nav.php");
 reset_session();
 ?>
-<form onsubmit="return validate(this)" method="POST">
-    <div>
-        <label for="email">Email</label>
-        <input type="email" name="email" required />
-    </div>
-    <div>
-        <label for="username">Username</label>
-        <input type="text" name="username" required maxlength="30" />
-    </div>
-    <div>
-        <label for="pw">Password</label>
-        <input type="password" id="pw" name="password" required minlength="8" />
-    </div>
-    <div>
-        <label for="confirm">Confirm</label>
-        <input type="password" name="confirm" required minlength="8" />
-    </div>
-    <input type="submit" value="Register" />
-</form>
+<div class="container-fluid">
+    <form onsubmit="return validate(this)" method="POST">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" required class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" required maxlength="30" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="pw" class="form-label">Password</label>
+            <input type="password" id="pw" name="password" required minlength="8" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="confirm" class="form-label">Confirm</label>
+            <input type="password" name="confirm" required minlength="8" class="form-control" />
+        </div>
+        <input type="submit" value="Register" class="btn btn-primary" />
+    </form>
+</div>
 <script>
     //dsp82 4/2/2024
     function validate(form) {

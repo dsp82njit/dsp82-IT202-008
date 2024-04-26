@@ -14,3 +14,7 @@ function render_table($data = array())
 {
     include(__DIR__ . "/../partials/table.php");
 }
+function render_movie_card($movie = array())
+{
+    include(__DIR__ . "/../partials/movie_card.php");
+}
