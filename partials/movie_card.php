@@ -1,10 +1,11 @@
-<?php if(!isset($movie)){
+<?php
+if(!isset($movie)){
     error_log("using movie partial without data");
     flash("Dev Alert: Movie called without data", "danger");
 }
 ?>
 <?php if(isset($movie)) : ?>
-    
+
 <div class="card mx-auto" style="width: 18rem;">
         <img src="https://example.com/<?php se($movie, "title", "Unknown"); ?>.jpg" class="card-img-top" alt="...">
         <div class="card-body">
@@ -23,3 +24,4 @@
         </div>
         </div>
         <?php endif; ?>
+        
