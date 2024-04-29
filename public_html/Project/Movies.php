@@ -1,13 +1,8 @@
 <?php
 /*
 // Include necessary files and check user roles dsp82 4/17/2024
-require(__DIR__ . "/../../../partials/nav.php");
+require(__DIR__ . "/../../partials/nav.php");
 
-if (!has_role("Admin")) {
-    flash("You don't have permission to view this page", "warning");
-    //die(header("Location: $BASE_PATH" . "/home.php"));
-    redirect("home.php");
-}
 
 // Build search form
 $form = [
@@ -44,9 +39,9 @@ $table = [
     "data" => $results,
     "title" => "Movies",
     "ignored_columns" => ["id"],
-    "view_url" => get_url("admin/view_movie.php"),
-    "delete_url" => get_url("admin/delete_movie.php"),
-    "edit_url"=> get_url("admin/edit_movie.php"),
+    "view_url" => get_url("Movie.php"),
+    //"delete_url" => get_url("delete_movie.php"),
+    //"edit_url"=> get_url("edit_movie.php"),
     
 ];
 //dsp82 4/17/2024
@@ -54,7 +49,7 @@ $table = [
 // Render the page content
 ?>
 <div class="container-fluid">
-    <h3>List Movies</h3>
+    <h3>Movies</h3>
     <!-- Render search form -->
     <form method="GET">
         <div class="row mb-3" style="align-items: flex-end;">
@@ -67,36 +62,35 @@ $table = [
         <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
         <a href="?clear" class="btn btn-secondary">Clear</a>
     </form>
-
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl4 row-cols-xxl-5 g-4">
     <!-- Render table -->
-    <?php render_table($table); ?>
+    <?php foreach($results as $movie):?>
+        <div class = "col">
+            <?php render_movie_card($movie); ?>
+        </div>
+    <?php endforeach; ?>
+    </div>
 </div>
 
 <?php
 // Include flash messages
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>
 */
+require(__DIR__ . "/../../partials/nav.php");
 
-
-//note we need to go up 1 more directory
-require(__DIR__ . "/../../../partials/nav.php");
-
-if (!has_role("Admin")) {
-    flash("You don't have permission to view this page", "warning");
-    redirect("home.php");
-}
 
 //build search form
 $form = [
     ["type" => "text", "name" => "title", "placeholder" => "Movie Title", "label" => "Movie Title", "include_margin" => false],
-    ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["title" => "Title", "stars" => "Stars", "year" => "Year"], "include_margin" => false],
+    //["type" => "number", "name" => "year", "placeholder" => "Year", "label" => "Year", "include_margin" => false],
+    //["type" => "number", "name" => "stars", "placeholder" => "Stars", "label" => "Stars", "include_margin" => false],
+    ["type" => "select", "name" => "sort", "label" => "Sort", "options" => ["title" => "Title", "year" => "Year", "stars" => "Stars", "created" => "Created", "modified" => "Modified"], "include_margin" => false],
     ["type" => "select", "name" => "order", "label" => "Order", "options" => ["asc" => "+", "desc" => "-"], "include_margin" => false],
     ["type" => "number", "name" => "limit", "label" => "Limit", "value" => "10", "include_margin" => false],
 ];
 
 
-$total_records = get_total_count("`MOVIE2`");
 $query = "SELECT id, title, stars, year FROM `MOVIE2` WHERE 1=1";
 $params = [];
 $session_key = $_SERVER["SCRIPT_NAME"];
@@ -129,12 +123,16 @@ if (count($_GET) > 0) {
         $query .= " AND name like :name";
         $params[":name"] = "%$name%";
     }
-  
+   
 
     //sort and order
     $sort = se($_GET, "sort", "created", false);
     if (!in_array($sort, ["title", "stars", "year", "created", "modified"])) {
         $sort = "created";
+    }
+    //tell mysql I care about the data from table "b"
+    if ($sort === "created" || $sort === "modified") {
+        $sort = "b." . $sort;
     }
     $order = se($_GET, "order", "desc", false);
     if (!in_array($order, ["asc", "desc"])) {
@@ -169,28 +167,24 @@ try {
         $results = $r;
     }
 } catch (PDOException $e) {
-    error_log("Error fetching stocks " . var_export($e, true));
+    error_log("Error fetching Movies " . var_export($e, true));
     flash("Unhandled error occurred", "danger");
 }
-foreach ($results as $index => $movie) {
-    foreach ($movie as $key => $value) {
+foreach ($results as $index => $broker) {
+    foreach ($broker as $key => $value) {
         if (is_null($value)) {
             $results[$index][$key] = "N/A";
         }
     }
 }
+
 $table = [
-    "data" => $results,
-    "title" => "Movies",
-    "ignored_columns" => ["id"],
-    "view_url" => get_url("admin/view_movie.php"),
-    "delete_url" => get_url("admin/delete_movie.php"),
-    "edit_url"=> get_url("admin/edit_movie.php"),
-    
+    "data" => $results, "title" => "Movies", "ignored_columns" => ["id"],
+    "view_url" => get_url("Movie.php"),
 ];
 ?>
 <div class="container-fluid">
-    <h3>List Movies</h3>
+    <h3>Brokers</h3>
     <form method="GET">
         <div class="row mb-3" style="align-items: flex-end;">
 
@@ -204,12 +198,16 @@ $table = [
         <?php render_button(["text" => "Search", "type" => "submit", "text" => "Filter"]); ?>
         <a href="?clear" class="btn btn-secondary">Clear</a>
     </form>
-    <?php render_result_counts(count($results), $total_records); ?>
-    <?php render_table($table); ?>
+    <div class="row w-100 row-cols-auto row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+        <?php foreach ($results as $movie) : ?>
+            <div class="col">
+                <?php render_movie_card($movie); ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>
 
 
 <?php
-//note we need to go up 1 more directory
-require_once(__DIR__ . "/../../../partials/flash.php");
+require_once(__DIR__ . "/../../partials/flash.php");
 ?>
