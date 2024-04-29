@@ -168,7 +168,7 @@ if (isset($_POST["save"])) {
         flash("Profile saved", "success");
     } catch (PDOException $e) {
         if ($e->errorInfo[1] === 1062) {
-            //https://www.php.net/manual/en/function.preg-match.php
+            //https://www.php.net/manual/en/function.preg-match.php //dsp82 4/1/2024
             preg_match("/Users.(\w+)/", $e->errorInfo[2], $matches);
             if (isset($matches[1])) {
                 flash("The chosen " . $matches[1] . " is not available.", "warning");

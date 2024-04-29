@@ -1,5 +1,5 @@
 <?php
-// Include necessary files and check user roles
+// Include necessary files and check user roles dsp82 4/17/2024
 require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
@@ -21,12 +21,14 @@ if ($id > -1) {
         $movie = $stmt->fetch();
         if (!$movie) {
             flash("Movie not found", "danger");
-            die(header("Location:" . get_url("admin/list_movies.php")));
+            //die(header("Location:" . get_url("admin/list_movies.php")));
+            redirect("admin/list_movies.php");
         }
     } catch (PDOException $e) {
         error_log("Error fetching movie record: " . var_export($e, true));
         flash("Error fetching movie record", "danger");
         die(header("Location:" . get_url("admin/list_movies.php")));
+        redirect("admin/list_movies.php");
     }
 }
 
@@ -37,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $year = se($_POST, "year", "", false);
     $stars = se($_POST, "stars", "", false);
 
-    // Update movie in the database
+    // Update movie in the database dsp82 4/17/2024
     $db = getDB();
     $query = "UPDATE `MOVIE2` SET title = :title, year = :year, stars = :stars, modified = CURRENT_TIMESTAMP WHERE id = :id";
     try {
@@ -45,7 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->execute([":title" => $title, ":year" => $year, ":stars" => $stars, ":id" => $id]);
         flash("Movie updated successfully", "success");
         // Redirect to movie list page
-        header("Location: " . get_url("admin/list_movies.php"));
+        //header("Location: " . get_url("admin/list_movies.php"));
+        redirect("admin/list_movies.php");
         exit();
     } catch (PDOException $e) {
         error_log("Error updating movie: " . var_export($e, true));
@@ -76,6 +79,6 @@ $form = [
 </div>
 
 <?php
-// Include flash messages
+// Include flash messages dsp82 4/17/2024
 require_once(__DIR__ . "/../../../partials/flash.php");
 ?>
