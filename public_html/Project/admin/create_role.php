@@ -4,7 +4,6 @@ require(__DIR__ . "/../../../partials/nav.php");
 
 if (!has_role("Admin")) {
     flash("You don't have permission to view this page", "warning");
-    //die(header("Location: " . get_url("home.php")));
     redirect("home.php");
 }
 
@@ -34,7 +33,7 @@ if (isset($_POST["name"]) && isset($_POST["description"])) {
     <h1>Create Role</h1>
     <form method="POST">
         <?php render_input(["id" => "name", "name" => "name", "label" => "Name", "rules" => ["required" => true]]); ?>
-        <?php render_input(["type" => "textarea", "id" => "name", "name" => "name", "label" => "Description", "rules" => ["required" => true]]); ?>
+        <?php render_input(["type" => "textarea", "id" => "name", "name" => "description", "label" => "Description", "rules" => ["required" => true]]); ?>
         <?php render_button(["text" => "Create Role", "type" => "submit"]); ?>
     </form>
 </div>

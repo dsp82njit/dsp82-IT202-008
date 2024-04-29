@@ -45,6 +45,7 @@ session_start();
             <li class="nav-item"><a class ="nav-link" href="<?php echo get_url('profile.php'); ?>">Profile</a></li>
             <li class="nav-item"><a class ="nav-link" href="<?php echo get_url('Movies.php'); ?>">Movies</a></li>
             <li class="nav-item"><a class ="nav-link" href="<?php echo get_url('my_movies.php'); ?>">My Movies</a></li>
+            <li class="nav-item"><a class ="nav-link" href="<?php echo get_url('least_liked_movies.php'); ?>">Movies No One Likes</a></li>
         <?php endif; ?>
         <?php if (!is_logged_in()) : ?>
             <li class="nav-item"><a class ="nav-link" href="<?php echo get_url('login.php'); ?>">Login</a></li>
@@ -62,7 +63,8 @@ session_start();
             <li><a class="dropdown-item" href="<?php echo get_url('admin/create_movie.php'); ?>">Create Movie</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('admin/list_movies.php'); ?>">Movie List</a></li>
             <li><a class="dropdown-item" href="<?php echo get_url('testApi.php'); ?>">Fetch Movie List</a></li>
-            
+            <li><a class="dropdown-item" href="<?php echo get_url('admin/movie_association.php'); ?>">Movie Association</a></li>
+            <li><a class="dropdown-item" href="<?php echo get_url('admin/assign_movie.php'); ?>">Give Movie</a></li>
         </ul>
         </li>
         <?php endif; ?>
