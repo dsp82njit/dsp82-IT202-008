@@ -148,7 +148,7 @@ require_once(__DIR__ . "/../../../partials/flash.php");
 require(__DIR__ . "/../../../partials/nav.php");
 
 
-//build search form
+//build search form //dsp82 4/24/2024
 $form = [
     ["type" => "text", "name" => "Username", "placeholder" => "Username", "label" => "Username", "include_margin" => false],
     ["type" => "text", "name" => "title", "placeholder" => "Movie Title", "label" => "Movie Title", "include_margin" => false],
@@ -198,7 +198,7 @@ if (count($_GET) > 0) {
         $query .= " AND u.username like :username";
         $params[":username"] = "%$username%";
     }
-    //name
+    //name dsp82 4/24/2024
     $name = se($_GET, "name", "", false);
     if (!empty($name)) {
         $query .= " AND name like :name";
@@ -230,7 +230,7 @@ if (count($_GET) > 0) {
     if ($limit < 1 || $limit > 100) {
         $limit = 10;
     }
-    //IMPORTANT make sure you fully validate/trust $limit (sql injection possibility)
+    //IMPORTANT make sure you fully validate/trust $limit (sql injection possibility) dsp82 4/24/2024
     $query .= " LIMIT $limit";
 }
 
@@ -251,8 +251,8 @@ try {
     error_log("Error fetching stocks " . var_export($e, true));
     flash("Unhandled error occurred", "danger");
 }
-foreach ($results as $index => $broker) {
-    foreach ($broker as $key => $value) {
+foreach ($results as $index => $movie) {
+    foreach ($movie as $key => $value) {
         if (is_null($value)) {
             $results[$index][$key] = "N/A";
         }
